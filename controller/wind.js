@@ -8,7 +8,14 @@ exports.getWind = async (req, res, next) => {
     const data = {
       mappingData: [],
       windyData: [],
-      mostWindy: {},
+      mostWindy: {
+        time: "",
+        speed: 0,
+        direction: "",
+        p1: "",
+        p25: "",
+        p10: "",
+      },
     };
 
     let windyCount = new Map();
@@ -34,12 +41,23 @@ exports.getWind = async (req, res, next) => {
 
               data.mappingData.push({
                 time: moment(date).format("DD-MM-YYYY h:mm:ss a"),
-                speeD: row.w,
+                speed: row.w,
                 direction: row.h,
                 p1: row.p1,
                 p25: row.p25,
                 p10: row.p10,
               });
+
+              if (row.w > data.mostWindy.speed) {
+                data.mostWindy = {
+                  time: moment(date).format("DD-MM-YYYY h:mm:ss a"),
+                  speed: row.w,
+                  direction: row.h,
+                  p1: row.p1,
+                  p25: row.p25,
+                  p10: row.p10,
+                };
+              }
             }
           }
         })
@@ -50,6 +68,7 @@ exports.getWind = async (req, res, next) => {
     });
     res.send(data);
   } catch (err) {
+    console.log(err);
     next(err);
   }
 };
