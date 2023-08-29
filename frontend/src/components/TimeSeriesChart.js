@@ -1,29 +1,41 @@
 import React from "react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts";
 import moment from "moment";
 
-const TimeSeriesChart = ({ data }) => {
-  const parsedData = data.map((item) => ({
+const TimeSeriesChart = ({ mapData }) => {
+  const data = mapData.map((item) => ({
     ...item,
-    time: moment(item.time, "DD-MM-YYYY h:mm:ss a").valueOf(), // Convert the date to a Unix timestamp (milliseconds since the Unix Epoch)
+    time: moment(item.time, "DD-MM-YYYY h:mm:ss a").toDate(),
   }));
 
+  const CustomTooltip = ({ active, payload }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="p-2 bg-white border border-gray-300 rounded">
+          <p className="label">{`Time: ${moment(payload[0].payload.time, "DD-MM-YYYY h:mm:ss a").format("HH:mm:ss")}`}</p>
+          <p className="label">{`P1: ${payload[0].payload.p1}`}</p>
+          <p className="label">{`P25: ${payload[0].payload.p25}`}</p>
+          <p className="label">{`P10: ${payload[0].payload.p10}`}</p>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  const maxX = Math.max(...data.map((item) => moment(item.time, "DD-MM-YYYY h:mm:ss a").valueOf()));
+  const minX = Math.min(...data.map((item) => moment(item.time, "DD-MM-YYYY h:mm:ss a").valueOf()));
+
+  const maxY = Math.max(...data.map((item) => Math.max(item.p1, item.p25, item.p10)));
+
   return (
-    <LineChart width={500} height={300} data={parsedData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+    <LineChart width={600} height={300} data={data}>
       <CartesianGrid strokeDasharray="3 3" />
-      <XAxis
-        dataKey="time"
-        domain={["auto", "auto"]}
-        name="Time"
-        tickFormatter={(unixTime) => moment(unixTime).format("DD-MM-YYYY h:mm:ss a")}
-        type="number"
-      />
-      <YAxis />
-      <Tooltip />
-      <Legend />
-      <Line type="monotone" dataKey="p1" stroke="#8884d8" />
-      <Line type="monotone" dataKey="p25" stroke="#82ca9d" />
-      <Line type="monotone" dataKey="p10" stroke="#ff7300" />
+      <XAxis dataKey="time" domain={[minX, maxX]} tickFormatter={(unixTime) => moment(unixTime).format("HH:mm:ss")} />
+      <YAxis domain={[0, maxY]} />
+      <Tooltip content={<CustomTooltip />} />
+      <Line type="monotone" dataKey="p1" stroke="#8884d8" name="P1" />
+      <Line type="monotone" dataKey="p25" stroke="#82ca9d" name="P25" />
+      <Line type="monotone" dataKey="p10" stroke="#ffc658" name="P10" />
     </LineChart>
   );
 };

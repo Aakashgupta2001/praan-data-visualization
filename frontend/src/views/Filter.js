@@ -1,0 +1,23 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import DateRangeFilter from "../components/DateRangeFilter";
+
+function Filter(props) {
+  const { setDateRange } = props;
+
+  const handleDateRangeFilter = (dates) => {
+    console.log("Selected range:", dates);
+    setDateRange(dates);
+    // Handle the filtering logic here or update the state
+  };
+
+  return (
+    <div>
+      <div className="w-full">
+        <DateRangeFilter onFilter={handleDateRangeFilter} />
+      </div>
+    </div>
+  );
+}
+
+export default Filter;

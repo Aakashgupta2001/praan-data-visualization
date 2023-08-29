@@ -18,27 +18,57 @@ exports.getWind = async (req, res, next) => {
       },
     };
 
-    let windyCount = new Map();
+    //time filter object with default start and end time
+    const filter = {
+      startDate: new Date("2019-03-19T03:40:51.000Z"),
+      endDate: new Date("2019-03-19T03:51:51.000Z"),
+    };
+
+    if (req.query.startDateTime && req.query.endDateTime) {
+      filter.startDate = new Date(req.query.startDateTime);
+      filter.endDate = new Date(req.query.endDateTime);
+    }
 
     const readStream = fs.createReadStream(path.join("./common/db.csv"));
+
     await new Promise((resolve, reject) => {
       readStream
         .pipe(csv.parse({ headers: true }))
         .on("error", (error) => console.error(error))
         .on("data", (row) => {
-          // console.log(parseDate(row.t));
-
           if (row.t) {
-            let date = parseDate(row.t);
+            let date = new Date(parseDate(row.t));
 
-            //condition to filter by given date and time
-            if (new Date(date).getTime() > new Date("2019-03-21T03:51:51.000Z").getTime()) {
-              readStream.destroy();
-              resolve();
-            } else {
-              //add condition to add object in most windy day,
-              //find top 7 most windy day
+            // Finding max wind speed within the same week of the filter date
+            const startWeek = moment(filter.startDate).isoWeek();
+            if (startWeek === moment(date).isoWeek() && row.w > data.mostWindy.speed) {
+              let direction = {
+                N: "North",
+                NE: "North East",
+                NW: "North West",
+                E: "East",
+                W: "West",
+                S: "South",
+                SE: "South East",
+                SW: "South West",
+              };
+              data.mostWindy = {
+                time: moment(date).format("ddd Do MMM YYYY"),
+                speed: row.w,
+                direction: direction[row.h],
+                p1: row.p1,
+                p25: row.p25,
+                p10: row.p10,
+              };
+            }
 
+            // if (date > filter.endDate) {
+            // readStream.destroy();
+            // resolve();
+            // } else
+
+            // grouping data withing the given time filter
+            if (date >= filter.startDate && date <= filter.endDate) {
               data.mappingData.push({
                 time: moment(date).format("DD-MM-YYYY h:mm:ss a"),
                 speed: row.w,
@@ -47,17 +77,6 @@ exports.getWind = async (req, res, next) => {
                 p25: row.p25,
                 p10: row.p10,
               });
-
-              if (row.w > data.mostWindy.speed) {
-                data.mostWindy = {
-                  time: moment(date).format("DD-MM-YYYY h:mm:ss a"),
-                  speed: row.w,
-                  direction: row.h,
-                  p1: row.p1,
-                  p25: row.p25,
-                  p10: row.p10,
-                };
-              }
             }
           }
         })
@@ -66,6 +85,7 @@ exports.getWind = async (req, res, next) => {
           resolve();
         });
     });
+
     res.send(data);
   } catch (err) {
     console.log(err);
@@ -73,11 +93,13 @@ exports.getWind = async (req, res, next) => {
   }
 };
 
-//function to parse existing date string into a valid date object for filter
+//function to parse date into a Valid Date Object
 function parseDate(input) {
   try {
+    //input format -- 21/03/19,09:01:46
+
     const [datePart, timePart] = input.split(",");
-    const [day, month, year] = datePart.split("/").map(Number);
+    const [year, month, day] = datePart.split("/").map(Number);
     const [hour, minute, second] = timePart.split(":").map(Number);
 
     const fullYear = 2000 + year;
@@ -88,31 +110,3 @@ function parseDate(input) {
     console.log(err);
   }
 }
-
-//target response object
-target = {
-  mappingData: [
-    {
-      time: "21/03/19,09:01:46",
-      speeD: 2,
-      direction: "SE",
-      p1: 30,
-      p25: 48,
-      p10: 62,
-    },
-  ],
-  //top 7 fastest days only in the given time range
-  windyData: [
-    {
-      day: "monday",
-      speed: 2,
-      direction: "SE",
-    },
-  ],
-  //windiest Day in the given time range
-  mostWindy: {
-    day: "monday",
-    speed: 2,
-    direction: "SE",
-  },
-};

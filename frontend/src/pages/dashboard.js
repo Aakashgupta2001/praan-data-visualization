@@ -1,23 +1,38 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import TimeSeriesChart from "../components/TimeSeriesChart";
+
 import { useGetWindDataMutation } from "../store/services/windApi";
-import TimeSeries from "../views/timeSeries";
+import TimeSeries from "../views/TimeSeries";
+import MaxWeekInfo from "../views/MaxWeekInfo";
+import Filter from "../views/Filter";
 
 function Dashboard() {
   const [getMaterialsList, { data: windData, error: windError, isError: isWindError, isSuccess: isWindSuccess }] = useGetWindDataMutation();
+  const [dateRange, setDateRange] = useState();
 
   useEffect(() => {
-    getMaterialsList();
-  }, []);
+    getMaterialsList(dateRange);
+  }, [dateRange]);
 
   if (windError) return <div>Error: {windError}</div>;
 
   return (
-    <div>
-      <h1>Time Series Chart</h1>
-      {windData && <TimeSeries mappingData={windData.mappingData} />}
-    </div>
+    // Right Aligned Columns
+    <>
+      {!windData && <div className="self-end w-full  m-5">Loading...</div>}
+
+      <div className="flex  m-5">
+        {/* left Aligned items */}
+        <div className="leftItems w-2/5 m-5">
+          <MaxWeekInfo mostWindy={windData?.mostWindy} />
+        </div>
+
+        {/* right aligned items */}
+        <div className="self-end w-3/5 m-5">
+          <Filter setDateRange={setDateRange} />
+          <TimeSeries mappingData={windData?.mappingData} />
+        </div>
+      </div>
+    </>
   );
 }
 
