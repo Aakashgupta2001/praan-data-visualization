@@ -4,7 +4,8 @@ import LocationComparisonChart from "../components/LocationComparisonChart";
 import Dropdown from "../components/Dropdown";
 
 function LocationChart(props) {
-  const { mappingData } = props;
+  const { dateRange } = props;
+
   const [filterBy, setFilterBy] = useState("speed");
   const options = ["speed", "p1", "p25", "p10"];
 
@@ -21,22 +22,20 @@ function LocationChart(props) {
           <Dropdown options={options} onSelect={onSelect} selectedValue={filterBy} />
         </div>
         {/* 3 columns containing comparision Charts for diffrent locations*/}
-        {mappingData && (
-          <div className="charts flex overflow-y-auto w-full">
-            <div className="flex flex-col items-center">
-              <LocationComparisonChart mapData={mappingData} filterBy={filterBy} strokeColor="#8884d8" />
-              Location 1
-            </div>
-            <div className="flex flex-col items-center">
-              <LocationComparisonChart mapData={mappingData} filterBy={filterBy} strokeColor="#82ca9d" />
-              Location 2
-            </div>
-            <div className="flex flex-col items-center">
-              <LocationComparisonChart mapData={mappingData} filterBy={filterBy} strokeColor="#ffc658" />
-              Location 3
-            </div>
+        <div className="charts flex overflow-y-auto w-full justify-center">
+          <div className="flex flex-col items-center">
+            <LocationComparisonChart filterBy={filterBy} strokeColor="#8884d8" dateRange={dateRange} device={"DeviceA"} />
+            Location 1 / Device A
           </div>
-        )}
+          <div className="flex flex-col items-center">
+            <LocationComparisonChart filterBy={filterBy} strokeColor="#82ca9d" dateRange={dateRange} device={"DeviceB"} />
+            Location 2 / Device B
+          </div>
+          <div className="flex flex-col items-center">
+            <LocationComparisonChart filterBy={filterBy} strokeColor="#ffc658" dateRange={dateRange} device={"DeviceC"} />
+            Location 3 / Device C
+          </div>
+        </div>
       </div>
     </div>
   );

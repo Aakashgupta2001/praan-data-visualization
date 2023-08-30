@@ -7,11 +7,11 @@ import Filter from "../views/Filter";
 import LocationChart from "../views/LocationChart";
 
 function Dashboard() {
-  const [getMaterialsList, { data: windData, error: windError, isError: isWindError, isSuccess: isWindSuccess }] = useGetWindDataMutation();
+  const [getWindData, { data: windData, error: windError, isError: isWindError, isSuccess: isWindSuccess }] = useGetWindDataMutation();
   const [dateRange, setDateRange] = useState();
 
   useEffect(() => {
-    getMaterialsList(dateRange);
+    getWindData(dateRange);
   }, [dateRange]);
 
   if (windError) return <div>Error: {windError}</div>;
@@ -19,21 +19,21 @@ function Dashboard() {
   return (
     // Right Aligned Columns
     <>
-      {!windData && <div className="self-end w-full  m-5">Loading...</div>}
-      <div className="py-5 mx-10 ">
+      {!windData && <div className="self-end w-full  m-5 ">Loading...</div>}
+      <div className="py-5 mx-10 pt-20">
         <Filter setDateRange={setDateRange} />
         <div className="flex ">
           {/* left Aligned items */}
           <div className=" w-2/5 my-5 mr-5">
-            <MaxWeekInfo mostWindy={windData?.mostWindy} />
+            <MaxWeekInfo mostWindy={windData?.data?.mostWindy} />
           </div>
 
           {/* right aligned items */}
           <div className="self-end w-3/5 my-5">
-            <TimeSeries mappingData={windData?.mappingData} />
+            <TimeSeries mappingData={windData?.data?.mappingData} />
           </div>
         </div>
-        <LocationChart mappingData={windData?.mappingData} />
+        <LocationChart dateRange={dateRange} />
       </div>
     </>
   );

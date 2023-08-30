@@ -1,11 +1,22 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const fs = require("fs");
+const mongo = require("mongoose");
+
+require("dotenv").config();
+
 app.use(cors());
 
 //routes
-require("./routes").default(app);
+require("./app/routes").default(app);
+
+//connecting to mongodb
+mongo
+  .connect(process.env.MONGO_URL)
+  .catch((error) => console.log(error))
+  .then(() => {
+    console.log("Connected To Mongo");
+  });
 
 //starting server
 const port = process.env.PORT || 3001;
