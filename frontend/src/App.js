@@ -6,7 +6,7 @@ function App() {
   const [dark, setDark] = useState(true);
 
   return (
-    <div className={`${dark ? "dark bg-gray-700" : "bg-slate-300"} h-screen w-full`}>
+    <div className={`${dark ? "dark bg-gray-700" : "bg-slate-300"}  w-full`}>
       <Header setDark={setDark} />
       <Dashboard />
     </div>

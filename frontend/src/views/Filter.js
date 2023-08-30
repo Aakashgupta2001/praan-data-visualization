@@ -13,7 +13,7 @@ function Filter(props) {
 
   return (
     <div>
-      <div className="mt-5 mx-10 bg-white dark:bg-slate-200 shadow rounded-lg ">
+      <div className=" bg-white dark:bg-slate-200 shadow rounded-lg ">
         <DateRangeFilter onFilter={handleDateRangeFilter} />
       </div>
     </div>
