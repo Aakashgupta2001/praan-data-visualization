@@ -7,6 +7,7 @@ const service = require("../service/service");
 
 exports.dashboard = async (req, res) => {
   try {
+    //initial filter object
     let filter = {
       device: "DeviceA",
     };
@@ -16,6 +17,7 @@ exports.dashboard = async (req, res) => {
       $lte: new Date("2021-03-19T03:50:46.000+00:00").toISOString(),
     };
 
+    //if date and time filter is requested, adding mongo filter query in filter object
     if (req.query.startDateTime && req.query.endDateTime) {
       filter.t = {
         $gte: new Date(req.query.startDateTime).toISOString(),
@@ -23,8 +25,10 @@ exports.dashboard = async (req, res) => {
       };
     }
 
+    //searching through database
     const results = await service.find(WindDataSchema, filter);
 
+    //formatting data and time
     const formattedMappingData = results.map((entry) => ({
       time: moment(entry.t).format("DD-MM-YYYY h:mm:ss a"),
       device: entry.device,
@@ -55,6 +59,7 @@ exports.dashboard = async (req, res) => {
       SW: "South West",
     };
 
+    //searching the most windy day of the week
     results.forEach((entry) => {
       if (entry.w > mostWindy.speed) {
         mostWindy = {
@@ -73,6 +78,7 @@ exports.dashboard = async (req, res) => {
       mostWindy: mostWindy,
     };
 
+    // returning response using response handler for uniform response throuout the app
     return responseHandler(data, res);
   } catch (err) {
     console.error("Error fetching data:", err);
@@ -86,11 +92,13 @@ exports.migrate = async (req, res, next) => {
       throw error.BadRequest("No File Uploaded");
     }
 
+    //reading the excel file and creating a json object
     const workbook = XLSX.read(req.file.buffer, { type: "buffer" });
     const worksheetName = workbook.SheetNames[0];
     const worksheet = workbook.Sheets[worksheetName];
     const jsonData = XLSX.utils.sheet_to_json(worksheet);
 
+    //formatting the object to filterout the entries that does not have all the feilds and formatting the date into a valid date object
     const formattedData = jsonData
       .filter((entry) => {
         return entry.device && entry.t && !+entry.t && entry.w && entry.h && entry.p1 && entry.p25 && entry.p10; // Assuming all fields are mandatory
@@ -100,7 +108,10 @@ exports.migrate = async (req, res, next) => {
         t: parseDate(entry.t),
       }));
 
+    //inserting all the data in db
     await WindDataSchema.insertMany(formattedData);
+
+    // returning response using response handler for uniform response throuout the app
     return responseHandler({ message: "Data Inserted Successfully" }, res);
   } catch (error) {
     console.error("Error processing file:", error);
@@ -116,6 +127,7 @@ exports.pdata = async (req, res, next) => {
       return res.status(400).send("No devices specified.");
     }
 
+    //creating an array of requested devices
     const deviceList = devices.split(",");
     deviceList.forEach((device, i) => {
       deviceList[i] = device.trim();
@@ -125,6 +137,7 @@ exports.pdata = async (req, res, next) => {
       device: { $in: deviceList },
     };
 
+    //filter for time
     filter.t = {
       $gte: new Date("2021-03-19T03:31:46.000+00:00").toISOString(),
       $lte: new Date("2021-03-19T03:50:46.000+00:00").toISOString(),
@@ -137,9 +150,10 @@ exports.pdata = async (req, res, next) => {
       };
     }
 
+    //searching data through api
     const results = await service.find(WindDataSchema, filter, {}, {}, {}, "", "device p1 p25 p10 t");
 
-    // Organize data per device
+    // Organizing data per device
     const data = {};
     deviceList.forEach((deviceId) => {
       const deviceData = results.filter((entry) => entry.device === deviceId);
@@ -156,6 +170,7 @@ exports.pdata = async (req, res, next) => {
       };
     });
 
+    // returning response using response handler for uniform response throuout the app
     return responseHandler(data, res);
   } catch (err) {
     console.error("Error fetching data:", err);
@@ -165,13 +180,17 @@ exports.pdata = async (req, res, next) => {
 
 exports.perDeviceData = async (req, res) => {
   try {
+    //initial filter object
+
     let filter = {};
 
+    //default start date and time
     filter.t = {
       $gte: new Date("2021-03-19T03:31:46.000+00:00").toISOString(),
       $lte: new Date("2021-03-19T03:50:46.000+00:00").toISOString(),
     };
 
+    //if date and time filter is requested, adding mongo filter query in filter object
     if (req.query.startDateTime && req.query.endDateTime) {
       filter.t = {
         $gte: new Date(req.query.startDateTime).toISOString(),
@@ -179,12 +198,15 @@ exports.perDeviceData = async (req, res) => {
       };
     }
 
+    //filter for device id
     if (req.query.device) {
       filter["device"] = req.query.device;
     }
 
+    //searching through database
     const results = await service.find(WindDataSchema, filter);
 
+    //formatting data and time
     const formattedMappingData = results.map((entry) => ({
       time: moment(entry.t).format("DD-MM-YYYY h:mm:ss a"),
       device: entry.device,
@@ -195,6 +217,7 @@ exports.perDeviceData = async (req, res) => {
       p10: entry.p10,
     }));
 
+    // returning response using response handler for uniform response throuout the app
     return responseHandler(formattedMappingData, res);
   } catch (err) {
     console.error("Error fetching data:", err);

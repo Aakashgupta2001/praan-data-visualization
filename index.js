@@ -3,8 +3,10 @@ const app = express();
 const cors = require("cors");
 const mongo = require("mongoose");
 
+//configuring env variables
 require("dotenv").config();
 
+//allowing cross url requests
 app.use(cors());
 
 //routes
@@ -20,7 +22,6 @@ mongo
 
 //starting server
 const port = process.env.PORT || 3001;
-
 app.listen(port, (err) => {
   if (err) {
     console.log(err);
