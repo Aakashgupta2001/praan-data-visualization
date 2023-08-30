@@ -2,11 +2,11 @@ import React from "react";
 
 const MaxWeeklyInfo = ({ data }) => {
   return (
-    <div className="p-4 ">
+    <div className="p-4 px-10 py-11 flex flex-col items-center">
       <h1 className="text-xl font-bold mb-4">Most Windy Day Of The Week</h1>
-      <div className="grid grid-cols-2 gap-4">
-        <div className="text-lg font-medium">Day:</div>
-        <div className="text-lg">{data.time} </div>
+      <div className="grid grid-cols-2 w-full gap-4 content-center ">
+        <div className="text-lg  font-medium">Day:</div>
+        <div className="text-lg ">{data.time} </div>
 
         <div className="text-lg font-medium">Wind Speed:</div>
         <div className="text-lg">{data.speed} km/h</div>

@@ -19,8 +19,8 @@ function Dashboard() {
     // Right Aligned Columns
     <>
       {!windData && <div className="self-end w-full  m-5">Loading...</div>}
-
-      <div className="flex  m-5">
+      <Filter setDateRange={setDateRange} />
+      <div className="flex  mx-5">
         {/* left Aligned items */}
         <div className=" w-2/5 m-5">
           <MaxWeekInfo mostWindy={windData?.mostWindy} />
@@ -28,7 +28,6 @@ function Dashboard() {
 
         {/* right aligned items */}
         <div className="self-end w-3/5 m-5">
-          <Filter setDateRange={setDateRange} />
           <TimeSeries mappingData={windData?.mappingData} />
         </div>
       </div>

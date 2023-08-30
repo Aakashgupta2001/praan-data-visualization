@@ -22,7 +22,7 @@ const DateRangeFilter = ({ onFilter }) => {
   };
 
   return (
-    <div className="flex w-full h-16 p-4 shadow  rounded-lg">
+    <div className="flex w-full h-16 p-4 shadow  rounded-lg  justify-center">
       <div className="flex space-x-4 items-center">
         <label className="text-lg font-semibold">Date:</label>
         <DatePicker

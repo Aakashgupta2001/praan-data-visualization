@@ -7,7 +7,10 @@ function MaxWeekInfo(props) {
 
   return (
     <div>
-      <div className="w-full bg-white dark:bg-slate-200 shadow rounded-lg">{mostWindy && <MaxWeeklyInfo data={mostWindy} />}</div>
+      {/* <h1 className="h-16 flex bg-white dark:bg-slate-200 w-full mb-4 p-4 shadow text-xl font-bold rounded-lg">Most Windy Day </h1> */}
+      <div className="w-full m-auto flex justify-center  bg-white dark:bg-slate-200 shadow rounded-lg ">
+        {mostWindy && <MaxWeeklyInfo data={mostWindy} />}
+      </div>
     </div>
   );
 }
