@@ -1,7 +1,8 @@
-import { Navbar, Typography, IconButton, Button, Input } from "@material-tailwind/react";
-import { BellIcon, Cog6ToothIcon } from "@heroicons/react/24/solid";
+function Header({ setDark }) {
+  let toggleDarkMode = () => {
+    setDark((prevState) => !prevState);
+  };
 
-function Header() {
   return (
     <nav className="bg-white border-gray-200 dark:bg-gray-900">
       <div className="mx-10 flex items-center justify-between p-4">
@@ -12,6 +13,7 @@ function Header() {
           <button
             type="button"
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            onClick={toggleDarkMode}
           >
             Toggle Dark Mode
           </button>

@@ -22,7 +22,7 @@ const DateRangeFilter = ({ onFilter }) => {
   };
 
   return (
-    <div className="flex w-full h-16 p-4 bg-white shadow  rounded-lg">
+    <div className="flex w-full h-16 p-4 shadow  rounded-lg">
       <div className="flex space-x-4 items-center">
         <label className="text-lg font-semibold">Date:</label>
         <DatePicker
@@ -31,7 +31,7 @@ const DateRangeFilter = ({ onFilter }) => {
           maxDate={new Date("2021-05-20")}
           onChange={(date) => setStartDate(date)}
           dateFormat="MMMM d, yyyy"
-          className="border p-2 rounded-md"
+          className="border p-2 rounded-md bg-white dark:bg-slate-500 dark:text-white"
         />
       </div>
 
@@ -45,7 +45,7 @@ const DateRangeFilter = ({ onFilter }) => {
           timeFormat="h:mm aa"
           timeIntervals={15}
           dateFormat="h:mm aa"
-          className="border p-2 rounded-md"
+          className="border p-2 rounded-md bg-white dark:bg-slate-500 dark:text-white"
         />
       </div>
 
@@ -59,7 +59,7 @@ const DateRangeFilter = ({ onFilter }) => {
           timeFormat="h:mm aa"
           timeIntervals={15}
           dateFormat="h:mm aa"
-          className="border p-2 rounded-md"
+          className="border p-2 rounded-md bg-white dark:bg-slate-500 dark:text-white"
         />
       </div>
 

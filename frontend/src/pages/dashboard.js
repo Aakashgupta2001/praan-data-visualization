@@ -22,7 +22,7 @@ function Dashboard() {
 
       <div className="flex  m-5">
         {/* left Aligned items */}
-        <div className="leftItems w-2/5 m-5">
+        <div className=" w-2/5 m-5">
           <MaxWeekInfo mostWindy={windData?.mostWindy} />
         </div>
 

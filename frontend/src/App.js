@@ -3,9 +3,11 @@ import Dashboard from "./pages/dashboard";
 import Header from "./components/header";
 
 function App() {
+  const [dark, setDark] = useState(true);
+
   return (
-    <div className="bg-blue-400 dark:bg-gray-700 h-screen w-full">
-      <Header />
+    <div className={`${dark ? "dark bg-gray-700" : "bg-slate-300"} h-screen w-full`}>
+      <Header setDark={setDark} />
       <Dashboard />
     </div>
   );
