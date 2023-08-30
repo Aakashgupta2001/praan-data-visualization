@@ -4,7 +4,7 @@ export const authApi = createApi({
   reducerPath: "authApi",
   // configuring baseQuery
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3001/api/v1/",
+    baseUrl: "https://praan-wind-fsle7qxuxa-el.a.run.app/api/v1/",
   }),
   endpoints: (builder) => ({
     // login api call
