@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const windApi = createApi({
+  // configuring base api query and adding authorization headers
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3001/api/v1/",
     prepareHeaders: (headers, { getState }) => {
@@ -14,6 +15,7 @@ export const windApi = createApi({
 
   reducerPath: "windApi",
   endpoints: (builder) => ({
+    // getwindData api for dashboard
     getWindData: builder.mutation({
       query: (filter) => {
         return {
@@ -21,8 +23,9 @@ export const windApi = createApi({
           method: "get",
           params: filter,
         };
-      }, // example endpoint
+      },
     }),
+    // get device data api for getting per device data
     getDeviceData: builder.mutation({
       query: (filter) => {
         return {
@@ -30,7 +33,7 @@ export const windApi = createApi({
           method: "get",
           params: filter,
         };
-      }, // example endpoint
+      },
     }),
   }),
 });

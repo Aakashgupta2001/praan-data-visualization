@@ -4,6 +4,7 @@ import { windApi } from "./services/windApi";
 import { authApi } from "./services/authApi";
 import authReducer from "./features/authSlice";
 
+// creating and registering the modules and reducers to the store
 export const store = configureStore({
   reducer: {
     auth: authReducer,

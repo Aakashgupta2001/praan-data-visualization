@@ -25,6 +25,7 @@ const SignUpPage = () => {
   const toast = useToast();
   const navigate = useNavigate();
 
+  //handling forms using formik
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
     initialValues: initialValues,
 
@@ -34,6 +35,7 @@ const SignUpPage = () => {
     },
   });
 
+  //displaying toast on successfull signup and redirecting to login page
   useEffect(() => {
     if (isSignupSuccess) {
       toast({
@@ -46,11 +48,11 @@ const SignUpPage = () => {
     }
   }, [isSignupSuccess, signupError]);
 
+  //displaying toast on error
   useEffect(() => {
     if (isSignupError) {
       console.log(signupError);
       toast({
-        // title: `${ JSON.stringify(signupError?.message)}`,
         title: `Error Creating Account, Please Try Again`,
         status: "error",
         isClosable: true,
@@ -64,8 +66,6 @@ const SignUpPage = () => {
         <div className="w-3/5">
           <form onSubmit={handleSubmit} className="flex flex-col  text-black dark:text-white">
             <h1 className="font-bold text-3xl text-center">Register Here!</h1>
-            <h3 className="font-normal text-lg  text-center mt-4">{/* Yaha tagline likh sakte hai! Suggest karo. */}</h3>
-
             <p className="font-medium text-md  mt-4">Enter Email</p>
             <div className="flex items-center w-full bg-slate-100 my-2 p-4 rounded-md focus:outline-cyan-500">
               <HiOutlineMail className="inline-block mr-2 " />

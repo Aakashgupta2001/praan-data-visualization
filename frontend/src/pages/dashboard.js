@@ -7,9 +7,11 @@ import Filter from "../views/Filter";
 import LocationChart from "../views/LocationChart";
 
 function Dashboard() {
+  //importing api mutation to call api and access data
   const [getWindData, { data: windData, error: windError, isError: isWindError, isSuccess: isWindSuccess }] = useGetWindDataMutation();
   const [dateRange, setDateRange] = useState();
 
+  //calling api everytime the dateRange changes
   useEffect(() => {
     getWindData(dateRange);
   }, [dateRange]);
@@ -17,10 +19,10 @@ function Dashboard() {
   if (windError) return <div>Error: {windError}</div>;
 
   return (
-    // Right Aligned Columns
     <>
       {!windData && <div className="self-end w-full  m-5 ">Loading...</div>}
       <div className="py-5 mx-10 pt-20">
+        {/* filter component to select date and time range */}
         <Filter setDateRange={setDateRange} />
         <div className="flex ">
           {/* left Aligned items */}
@@ -33,6 +35,7 @@ function Dashboard() {
             <TimeSeries mappingData={windData?.data?.mappingData} />
           </div>
         </div>
+        {/* bottom aligned items */}
         <LocationChart dateRange={dateRange} />
       </div>
     </>

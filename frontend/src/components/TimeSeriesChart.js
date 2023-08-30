@@ -8,6 +8,7 @@ const TimeSeriesChart = ({ mapData }) => {
     time: moment(item.time, "DD-MM-YYYY h:mm:ss a").toDate(),
   }));
 
+  //custom tooltip created to display date in HH:mm:ss format
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
@@ -22,9 +23,11 @@ const TimeSeriesChart = ({ mapData }) => {
     return null;
   };
 
+  //calculating the maximum and minimum value of x axis (startTime, endTime)
   const maxX = Math.max(...data.map((item) => moment(item.time, "DD-MM-YYYY h:mm:ss a").valueOf()));
   const minX = Math.min(...data.map((item) => moment(item.time, "DD-MM-YYYY h:mm:ss a").valueOf()));
 
+  //calculating the maximum value of Y axis (Particles, p1,p25,p10)
   const maxY = Math.max(...data.map((item) => Math.max(item.p1, item.p25, item.p10)));
 
   return (
@@ -33,6 +36,7 @@ const TimeSeriesChart = ({ mapData }) => {
       <XAxis dataKey="time" domain={[minX, maxX]} tickFormatter={(unixTime) => moment(unixTime).format("HH:mm:ss")} />
       <YAxis domain={[0, maxY]} />
       <Tooltip content={<CustomTooltip />} />
+      {/* mapping 3 lines */}
       <Line type="monotone" dataKey="p1" stroke="#8884d8" name="P1" />
       <Line type="monotone" dataKey="p25" stroke="#82ca9d" name="P25" />
       <Line type="monotone" dataKey="p10" stroke="#ffc658" name="P10" />

@@ -3,6 +3,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const DateRangeFilter = ({ onFilter }) => {
+  // component for filter where we set the start and end date on filter button click
   const [startDate, setStartDate] = useState(new Date("2021-03-19"));
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());

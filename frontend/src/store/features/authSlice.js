@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+//initial state
 const initialState = {
   token: null,
   isAuthenticated: false,
@@ -10,6 +11,7 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    //setting users and storing user info with token in localstorage and setting isAuthenticated to true for enabling access to protected routes
     setUser: (state, action) => {
       console.log("USER = ", action.payload.data);
       state.user = action.payload.data;
@@ -22,6 +24,7 @@ export const authSlice = createSlice({
       state.token = action.payload.data.token;
       state.isAuthenticated = true;
     },
+    // clearing user data and setting isAuthenticated to false
     logout: (state) => {
       console.log("logouttttt, ", state);
       localStorage.clear();

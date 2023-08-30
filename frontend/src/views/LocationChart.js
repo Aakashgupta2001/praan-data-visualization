@@ -4,8 +4,10 @@ import LocationComparisonChart from "../components/LocationComparisonChart";
 import Dropdown from "../components/Dropdown";
 
 function LocationChart(props) {
+  //date range for the filter
   const { dateRange } = props;
 
+  // state to select which value to filter the given grapgh with
   const [filterBy, setFilterBy] = useState("speed");
   const options = ["speed", "p1", "p25", "p10"];
 
@@ -21,7 +23,7 @@ function LocationChart(props) {
           {/* dropdown to select filter value top right of the component */}
           <Dropdown options={options} onSelect={onSelect} selectedValue={filterBy} />
         </div>
-        {/* 3 columns containing comparision Charts for diffrent locations*/}
+        {/* 3 columns containing comparision Charts for diffrent locations/Devices */}
         <div className="charts flex overflow-y-auto w-full justify-center">
           <div className="flex flex-col items-center">
             <LocationComparisonChart filterBy={filterBy} strokeColor="#8884d8" dateRange={dateRange} device={"DeviceA"} />

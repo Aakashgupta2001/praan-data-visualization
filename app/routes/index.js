@@ -27,7 +27,7 @@ module.exports.default = (app) => {
   app.use(express.static("public"));
 
   //frontend Path
-  app.get("/", (req, res, next) => {
+  app.get("/*", (req, res, next) => {
     res.sendFile(getDir() + "/build/index.html");
   });
 

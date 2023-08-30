@@ -7,7 +7,7 @@ const Dropdown = ({ onSelect, options, selectedValue }) => {
     onSelect(option);
     setIsOpen(false);
   };
-
+  //dropdown component
   return (
     <div className="relative inline-block text-left">
       <div>

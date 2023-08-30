@@ -3,12 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "../store/features/authSlice";
 
 function Header({ setDark, isAuthenticated }) {
+  // toggling the dark mode state to toggle darkmode
   let toggleDarkMode = () => {
     setDark((prevState) => !prevState);
   };
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  //clearing localstorage and redirecting user to login page after logout
   const logoutUser = () => {
     dispatch(logout());
     navigate("/");

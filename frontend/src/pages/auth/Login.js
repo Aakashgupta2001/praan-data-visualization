@@ -18,12 +18,14 @@ const initialValues = {
   password: "",
 };
 const LoginPage = () => {
+  //importing api mutation to call api and access data
   const [login, { data: loginData, error: loginError, isError: isLoginError, isSuccess: isLoginSuccess }] = useLoginMutation();
 
   const dispatch = useAppDispatch();
   const toast = useToast();
   const navigate = useNavigate();
 
+  //using formik to manage form
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
     initialValues: initialValues,
     onSubmit: (values, action) => {
@@ -32,6 +34,7 @@ const LoginPage = () => {
     },
   });
 
+  //displaying toast on successfull login and saving the userdata along with the token
   useEffect(() => {
     if (isLoginSuccess) {
       toast({
@@ -52,11 +55,11 @@ const LoginPage = () => {
     }
   }, [isLoginSuccess, loginError]);
 
+  //displaying a toast if an error occurs
   useEffect(() => {
     if (isLoginError) {
       console.log(loginError);
       toast({
-        // title: `${JSON.stringify(loginError?.message)}`,
         title: `Incorrect Password`,
         status: "error",
         isClosable: true,
@@ -70,7 +73,6 @@ const LoginPage = () => {
         <div className="w-3/5">
           <form onSubmit={handleSubmit} className="flex flex-col text-black dark:text-white">
             <h1 className="font-bold text-3xl text-center">Login!</h1>
-            <h3 className="font-normal text-lg  text-center mt-4">{/* Yaha tagline likh sakte hai! Suggest karo. */}</h3>
             <p className="font-medium text-md ">Enter Email</p>
             <div className="flex items-center w-full bg-slate-100 my-2 p-4 rounded-md focus:outline-cyan-500">
               <HiOutlineMail className="inline-block mr-2 " />

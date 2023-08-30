@@ -8,12 +8,12 @@ const LocationComparisonChart = ({ filterBy, strokeColor = "#8884d8", device, da
 
   const [data, setData] = useState([]);
 
+  //calling api every time date range changes
   useEffect(() => {
     getDeviceData({ ...dateRange, device: device });
   }, [dateRange]);
 
-  ////////////////////////
-
+  //on getting data from api, updating the Data and converting the date into a valid js date object
   useEffect(() => {
     if (windData) {
       console.log("windData", windData.data);
@@ -25,6 +25,7 @@ const LocationComparisonChart = ({ filterBy, strokeColor = "#8884d8", device, da
     }
   }, [windData]);
 
+  //custom tooltip created to display date in HH:mm:ss format and to display the label and value according the the selected filter (speed, p1,p25,p10)
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
@@ -37,9 +38,11 @@ const LocationComparisonChart = ({ filterBy, strokeColor = "#8884d8", device, da
     return null;
   };
 
+  //calculating the maximum and minimum value of x axis (startTime, endTime)
   const maxX = Math.max(...data.map((item) => moment(item.time, "DD-MM-YYYY h:mm:ss a").valueOf()));
   const minX = Math.min(...data.map((item) => moment(item.time, "DD-MM-YYYY h:mm:ss a").valueOf()));
 
+  //calculating the maximum value of Y axis (can be of speed, p1,p25,p10)
   const maxY = Math.max(...data.map((item) => item[filterBy]));
 
   return (

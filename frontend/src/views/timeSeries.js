@@ -5,6 +5,7 @@ import TimeSeriesChart from "../components/TimeSeriesChart";
 function TimeSeries(props) {
   const { mappingData } = props;
 
+  //view for ui design of displaying the time series graph of p1, p25, p10 overlayed on each other
   return (
     <div>
       <div className="w-full bg-white dark:bg-slate-200 rounded-lg h-2/3 p-4 flex flex-col items-center justify-center">

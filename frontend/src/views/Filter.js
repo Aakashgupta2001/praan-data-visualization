@@ -8,9 +8,9 @@ function Filter(props) {
   const handleDateRangeFilter = (dates) => {
     console.log("Selected range:", dates);
     setDateRange(dates);
-    // Handle the filtering logic here or update the state
   };
 
+  // view for styling the component
   return (
     <div>
       <div className=" bg-white dark:bg-slate-200 shadow rounded-lg ">
