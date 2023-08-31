@@ -28,6 +28,16 @@ exports.dashboard = async (req, res) => {
     //searching through database
     const results = await service.find(WindDataSchema, filter);
 
+    let weekFilter = {
+      t: {
+        $gte: moment(filter.t["$gte"]).startOf("week"),
+        $lte: moment(filter.t["$gte"]).endOf("week"),
+      },
+    };
+
+    console.log("week filter", weekFilter);
+    const weekData = await service.find(WindDataSchema, weekFilter);
+
     //formatting data and time
     const formattedMappingData = results.map((entry) => ({
       time: moment(entry.t).format("DD-MM-YYYY h:mm:ss a"),
@@ -60,7 +70,7 @@ exports.dashboard = async (req, res) => {
     };
 
     //searching the most windy day of the week
-    results.forEach((entry) => {
+    weekData.forEach((entry) => {
       if (entry.w > mostWindy.speed) {
         mostWindy = {
           time: moment(entry.t).format("ddd Do MMM YYYY"),

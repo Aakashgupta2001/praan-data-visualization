@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const windApi = createApi({
   // configuring base api query and adding authorization headers
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://praan-wind-fsle7qxuxa-el.a.run.app/api/v1/",
+    baseUrl: "/api/v1/",
     prepareHeaders: (headers, { getState }) => {
       console.log("getState", getState);
       const token = JSON.parse(localStorage.getItem("user") || "").token;
