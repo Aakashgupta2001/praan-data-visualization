@@ -1,58 +1,75 @@
-// mongodb global queiry service
-
-// create
-exports.create = async (model, body) => {
-  return await model.create(body);
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
 };
-
-//find one and update, create new if not found
-exports.upsert = async (model, filter, body) => {
-  return await model.findOneAndUpdate(filter, body, {
-    new: true,
-    upsert: true,
-    runValidators: true,
-    context: "query",
-  });
-};
-
-// find and filter
-exports.find = async (model, filter, projection = {}, pagination = {}, sort = {}, populate = "", select = "") => {
-  return await model.find(filter, projection).skip(pagination.skip).limit(pagination.limit).sort(sort).populate(populate).select(select).lean();
-};
-
-//find a single document with filter
-exports.findOne = async (model, filter, projection = {}, populate = "") => {
-  return await model.findOne(filter, projection).populate(populate);
-};
-
-//count documetns
-exports.countDocuments = async (model, filter) => {
-  return await model.countDocuments(filter);
-};
-
-// updates
-exports.findOneAndUpdate = async (model, filter, body) => {
-  return await model.findOneAndUpdate(filter, body, { new: true });
-};
-
-exports.updateMany = async (model, filter, body) => {
-  return await model.updateMany(filter, body, { new: true });
-};
-
-// delete
-exports.findOneAndSoftDelete = async (model, filter, body) => {
-  return await model.findOneAndUpdate(filter, body, { new: true });
-};
-
-exports.findOneAndHardDelete = async (model, filter) => {
-  return await model.findOneAndDelete(filter);
-};
-
-exports.deleteMany = async (model, filter) => {
-  return await model.deleteMany(filter);
-};
-
-// aggregation
-exports.aggregate = async (model, query) => {
-  return await model.aggregate(query);
-};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.deleteMany = exports.findOneAndHardDelete = exports.findOneAndSoftDelete = exports.findOneAndUpdate = exports.countDocuments = exports.findOne = exports.find = exports.upsert = exports.create = void 0;
+function create(model, body) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield model.create(body);
+    });
+}
+exports.create = create;
+function upsert(model, filter, body) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield model.findOneAndUpdate(filter, body, {
+            new: true,
+            upsert: true,
+            runValidators: true,
+            context: "query",
+        });
+    });
+}
+exports.upsert = upsert;
+function find(model, filter, projection, sort, select) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let query = model.find(filter, projection).sort(sort).lean();
+        if (select) {
+            query = query.select(select);
+        }
+        return (yield query.exec());
+    });
+}
+exports.find = find;
+function findOne(model, filter, projection) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield model.findOne(filter, projection);
+    });
+}
+exports.findOne = findOne;
+function countDocuments(model, filter) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield model.countDocuments(filter);
+    });
+}
+exports.countDocuments = countDocuments;
+function findOneAndUpdate(model, filter, body) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield model.findOneAndUpdate(filter, body, { new: true });
+    });
+}
+exports.findOneAndUpdate = findOneAndUpdate;
+function findOneAndSoftDelete(model, filter, body) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield model.findOneAndUpdate(filter, body, { new: true });
+    });
+}
+exports.findOneAndSoftDelete = findOneAndSoftDelete;
+function findOneAndHardDelete(model, filter) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield model.findOneAndDelete(filter);
+    });
+}
+exports.findOneAndHardDelete = findOneAndHardDelete;
+function deleteMany(model, filter) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield model.deleteMany(filter);
+    });
+}
+exports.deleteMany = deleteMany;
