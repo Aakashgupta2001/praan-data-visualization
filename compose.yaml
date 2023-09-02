@@ -13,8 +13,8 @@ services:
       context: .
     environment:
       NODE_ENV: production
-      MONGO_URL: "mongodb+srv://admin:admin@cluster0.uu4bq.mongodb.net/Praan?retryWrites=true&w=majority"
-      SECRET_KEY: "asihjbduioahduioaduoiasnuodo"
+      ENV MONGO_URL: "mongodb+srv://admin:admin@cluster0.uu4bq.mongodb.net/Praan?retryWrites=true&w=majority"
+      ENV SECRET_KEY: "asihjbduioahduioaduoiasnuodo"
     ports:
       - 3001:3001
 # The commented out section below is an example of how to define a PostgreSQL
